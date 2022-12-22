@@ -1,6 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
-const model = require('./models/User')
+const bodyParser = require('body-parser')
 const PORT = 3000
 
 const app = express()
@@ -11,10 +11,14 @@ const routes = require('./routes/index_route')
 // database
 const dbku = require('./configs/database')
 
+// body parser
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended:true}))
+
 // koneksi
 const koneksi = async () => {
-    await dbku.authenticate()
-    model.findAll()
+    await dbku.koneksi.sync()
+    await dbku.koneksi.authenticate()
     console.log(`server ${process.env.JENIS_DATABASE} berjalan di PORT ${process.env.PORT_DATABASE}`)
 }
 koneksi()
