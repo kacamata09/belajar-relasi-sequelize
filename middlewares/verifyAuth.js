@@ -25,5 +25,27 @@ module.exports = {
                 return resp.status(401).json({message: 'token yang anda masukkan salah atau mengalami error'});
             }
         }
-    
-} }
+    },
+    verifyAdmin(requ, resp, next) {
+        const authHeader = requ.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
+        try {
+            jwt.verify(token, process.env.SECRET_KEY, async (err, decode) => {
+                if (err) {
+                    return resp.status(403).json({message:'kemungkinan token kadaluarsa'})
+                } else {
+                    const cekUser = await User.findOne({where: {username: decode.username}, include: ['role']})
+                    if (cekUser.role.role == 'admin') {
+                        return next()
+                    }
+
+                    return resp.status(403).json({message:'anda tidak bisa mengakses halaman ini'})
+                }
+            })
+        
+        } catch (error) {
+            return resp.status(401).json({message: 'token yang anda masukkan salah atau mengalami error'});
+        }
+    }
+
+}

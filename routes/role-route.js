@@ -1,11 +1,11 @@
 const express = require('express')
 const roleRoute = express.Router()
 const roleController = require('../controllers/role-controller')
-const mwVerifToken = require('../middlewares/verifyToken')
+const mwVerifAuth = require('../middlewares/verifyAuth')
 
 
 roleRoute.route('/role')
-    .get(mwVerifToken.verifyToken, roleController.getRole)
-    .post(mwVerifToken.verifyToken ,roleController.tambah)
+    .get(mwVerifAuth.verifyToken, roleController.getRole)
+    .post(mwVerifAuth.verifyToken ,roleController.tambah)
 
 module.exports = roleRoute

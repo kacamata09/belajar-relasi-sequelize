@@ -21,11 +21,9 @@ module.exports = {
             return resp.status(401).json({message:'password salah'})
         } else {
             const token = jwt.sign({username, password}, process.env.SECRET_KEY, {algorithm: 'HS256'})
-            if (user.role.role == 'admin') {
-                return resp.status(200).json({message:'anda adalah admin', token})
-            } else {
-                return resp.status(401).json({message:'anda bukan admin'})
-            }
+            
+            return resp.status(200).json({message:'Success Login', token})
+            
         }
        
 
