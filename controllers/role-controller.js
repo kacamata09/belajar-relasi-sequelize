@@ -32,5 +32,11 @@ module.exports = {
         })
       
         return resp.status(200).json({message:'Success tambah Role', data : 'rolebaru'})
+    },
+    edit(requ, resp) {
+
+    },
+    hapus(requ, resp) {
+        
     }
 }
