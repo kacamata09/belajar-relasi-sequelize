@@ -33,10 +33,20 @@ module.exports = {
       
         return resp.status(200).json({message:'Success tambah Role', data : 'rolebaru'})
     },
-    edit(requ, resp) {
+    async edit(requ, resp) {
+        await Role.update({
+            nama: requ.body.nama,
+            email: requ.body.email,
+        }, {where : {id: requ.params.id}})
+
+        const user = await Role.findByPk(requ.params.id, { attributes: {exclude: ['password', 'createdAt', 'updatedAt']}})
+        return resp.status(200).json({message: 'success update', data : user})
 
     },
-    hapus(requ, resp) {
-        
+    async hapus(requ, resp) {
+        await Role.destroy({where: {
+            id: requ.params.id
+        }})
+        return resp.status(200).json({message: 'success delete'})
     }
 }
